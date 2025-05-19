@@ -22,10 +22,16 @@
 
     <p><strong>Email:</strong> <span th:text="${user.email}">email@example.com</span></p>
     <p><strong>Account Type:</strong>
-        <span th:if="${#lists.contains(user.roles, 'ROLE_BUYER')}">Buyer </span>
-        <span th:if="${#lists.contains(user.roles, 'ROLE_SELLER')}">Seller</span>
-        <span th:if="${#lists.contains(user.roles, 'ROLE_ADMIN')}">(Admin)</span>
+        <span th:each="role : ${user.roles}">
+    <span th:switch="${role.name}">
+      <span th:case="'ROLE_BUYER'">Buyer</span>
+      <span th:case="'ROLE_SELLER'">Seller</span>
+      <span th:case="'ROLE_ADMIN'">Admin</span>
+    </span>
+    <span th:if="${!#lists.isLast(role, user.roles)}">, </span>
+  </span>
     </p>
+
 </div>
 
 </body>
