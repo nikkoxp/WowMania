@@ -1,3 +1,7 @@
+:root {
+    --navbar-height: 56px;
+}
+
 .wow-background-1 {
     background: url('../img/background1.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -8,6 +12,31 @@
     background: url('../img/background2.webp') no-repeat center center fixed;
     background-size: cover;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - var(--navbar-height));
+    padding: 1rem;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge-horde {
+    background-color: #c0392b !important;
+    color: #fff !important;
+}
+
+.badge-alliance {
+    background-color: #2980b9 !important;
+    color: #fff !important;
 }
 
 .illidan-1 {

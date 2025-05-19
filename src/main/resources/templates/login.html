@@ -8,8 +8,10 @@
 <body class="bg-dark text-white wow-background-1">
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card bg-secondary p-4 rounded-4 shadow-lg text-white wow-card">
-        <div class="text-center">
-            <img src="/img/logo1.png" class="mb-3" alt="WoWMania Logo" style="max-width: 200px;">
+        <div class="logo text-center">
+            <a href="/" th:href="@{/}" class="d-block mb-3">
+                <img src="/img/logo1.png" class="mx-auto" alt="WoWMania Logo" style="max-width: 200px;">
+            </a>
             <h2>Login</h2>
         </div>
         <div th:if="${loginError}" class="alert alert-danger text-center">

@@ -9,8 +9,10 @@
 
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card bg-secondary p-4 rounded-4 shadow-lg text-white wow-card">
-        <div class="text-center">
-            <img src="/img/logo2.jpg" class="mb-3" alt="WoWMania Logo" style="max-width: 75px;">
+        <div class="logo text-center">
+            <a href="/" th:href="@{/}" class="d-block mb-3" style="max-width: 75px;">
+                <img src="/img/logo2.jpg" class="mx-auto" alt="WoWMania Logo" style="max-width: 75px;">
+            </a>
             <h2>Register</h2>
         </div>
         <div th:if="${registrationError}" class="alert alert-danger">
