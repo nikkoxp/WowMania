@@ -23,6 +23,16 @@ public class ListingController {
         return "listings";
     }
 
+    @GetMapping("/{id}")
+    public String viewListingDetails(@PathVariable Long id, Model model) {
+        Listing listing = listingService.findById(id);
+        if (listing == null) {
+            return "redirect:/listings";
+        }
+        model.addAttribute("listing", listing);
+        return "listing_details";
+    }
+
     @GetMapping("/new")
     @PreAuthorize("hasAnyRole('SELLER','ADMIN')")
     public String showCreateForm(Model model) {

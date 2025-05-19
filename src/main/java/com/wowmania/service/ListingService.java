@@ -25,6 +25,10 @@ public class ListingService {
         return listingRepo.findByTitleContainingIgnoreCase(keyword);
     }
 
+    public Listing findById(Long id) {
+        return listingRepo.findById(id).orElse(null);
+    }
+
     public void save(Listing listing, Authentication auth) {
         User seller = userRepo.findByUsername(auth.getName());
         listing.setSeller(seller);
