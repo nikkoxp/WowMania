@@ -4,6 +4,8 @@ public class UserDto {
     public String username;
     public String email;
     public String password;
+    private boolean buyer;
+    private boolean seller;
 
     public String getEmail() {
         return email;
@@ -17,6 +19,14 @@ public class UserDto {
         return password;
     }
 
+    public boolean isBuyer() {
+        return buyer;
+    }
+
+    public boolean isSeller() {
+        return seller;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -27,5 +37,13 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setBuyer(boolean buyer) {
+        this.buyer = buyer;
+    }
+
+    public void setSeller(boolean seller) {
+        this.seller = seller;
     }
 }
