@@ -47,7 +47,9 @@ public class SecurityConfig {
                                 "/register",
                                 "/custom-login",
                                 "/css/**",
-                                "/img/**"
+                                "/img/**",
+                                "/users/**",
+                                "/profile"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

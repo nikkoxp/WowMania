@@ -19,6 +19,10 @@ public class UserService {
     @Autowired private RoleRepository roleRepo;
     @Autowired private PasswordEncoder passwordEncoder;
 
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
+
     public void registerUser(UserDto dto) {
         if (userRepo.existsByUsername(dto.getUsername())) {
             throw new IllegalArgumentException("Username already taken");
@@ -42,7 +46,19 @@ public class UserService {
             if (r==null) { r = new Role(); r.setName("ROLE_SELLER"); roleRepo.save(r); }
             roles.add(r);
         }
-        // everyone who registers must pick at least one
+        user.setRoles(roles);
+        userRepo.save(user);
+    }
+
+    public void updateProfile(String username, String newEmail, String newPassword, boolean buyer, boolean seller) {
+        User user = userRepo.findByUsername(username);
+        user.setEmail(newEmail);
+        if (newPassword!=null && !newPassword.isBlank()) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+        Set<Role> roles = new HashSet<>();
+        if (buyer) roles.add(roleRepo.findByName("ROLE_BUYER"));
+        if (seller) roles.add(roleRepo.findByName("ROLE_SELLER"));
         user.setRoles(roles);
         userRepo.save(user);
     }
