@@ -23,8 +23,14 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/login")
-    public String loginPage() {
+    @GetMapping("/custom-login")
+    public String showLoginPage() {
+        System.out.println("custom login page");
         return "login";
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/login";
     }
 }
