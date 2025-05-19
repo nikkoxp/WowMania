@@ -24,7 +24,15 @@ public class UserController {
     }
 
     @GetMapping("/custom-login")
-    public String showLoginPage() {
+    public String showLoginPage(@RequestParam(value = "error", required = false) String error,
+                                @RequestParam(value = "logout", required = false) String logout,
+                                Model model) {
+        if (error != null) {
+            model.addAttribute("loginError", true);
+        }
+        if (logout != null) {
+            model.addAttribute("logoutSuccess", true);
+        }
         return "login";
     }
 }

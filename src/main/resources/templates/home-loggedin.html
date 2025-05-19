@@ -14,7 +14,10 @@
         </a>
         <div class="d-flex align-items-center text-white">
             <span class="me-3">Welcome, <strong th:text="${username}">User</strong></span>
-            <a href="/logout" class="btn btn-outline-light">Log Out</a>
+            <form th:action="@{/logout}" method="post" class="d-inline">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-outline-light">Log Out</button>
+            </form>
         </div>
     </div>
 </nav>
@@ -24,6 +27,10 @@
     <p class="lead">Buy, Sell, and Trade Services and Items — All Outside the Auction House</p>
     <a href="/listings" class="btn btn-lg btn-warning mt-4">Explore Listings</a>
 </div>
+
+<p class="display-3">
+    You have visited this dashboard <strong th:text="${visits}">0</strong> times this session.
+</p>
 
 </body>
 </html>
