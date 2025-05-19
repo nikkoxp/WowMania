@@ -6,12 +6,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class User {
     @Id @GeneratedValue
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
     private String password;
+    @Column(nullable = false, unique = true)
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)

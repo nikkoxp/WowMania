@@ -20,6 +20,12 @@ public class UserService {
     @Autowired private PasswordEncoder passwordEncoder;
 
     public void registerUser(UserDto dto) {
+        if (userRepo.existsByUsername(dto.getUsername())) {
+            throw new IllegalArgumentException("Username already taken");
+        }
+        if (userRepo.existsByEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("Email already registered");
+        }
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());

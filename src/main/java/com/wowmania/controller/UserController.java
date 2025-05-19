@@ -18,9 +18,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("user") UserDto dto) {
-        userService.registerUser(dto);
-        return "redirect:/login";
+    public String register(@ModelAttribute("user") UserDto dto, Model model) {
+        try {
+            userService.registerUser(dto);
+            return "redirect:/custom-login?registered";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("registrationError", e.getMessage());
+            return "register";
+        }
     }
 
     @GetMapping("/custom-login")

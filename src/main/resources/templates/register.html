@@ -13,6 +13,9 @@
             <img src="/img/logo2.jpg" class="mb-3" alt="WoWMania Logo" style="max-width: 75px;">
             <h2>Register</h2>
         </div>
+        <div th:if="${registrationError}" class="alert alert-danger">
+            <span th:text="${registrationError}"></span>
+        </div>
         <form th:action="@{/register}" th:object="${user}" method="post">
             <div class="mb-3">
                 <label>Username</label>
