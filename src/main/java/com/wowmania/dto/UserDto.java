@@ -7,6 +7,24 @@ public class UserDto {
     private boolean buyer;
     private boolean seller;
 
+    private String inGameName;
+    private String allegiance;
+
+    public String getInGameName() {
+        return inGameName;
+    }
+    public void setInGameName(String inGameName) {
+        this.inGameName = inGameName;
+    }
+
+    public String getAllegiance() {
+        return allegiance;
+    }
+    public void setAllegiance(String allegiance) {
+        this.allegiance = allegiance;
+    }
+
+
     public String getEmail() {
         return email;
     }

@@ -22,6 +22,8 @@ public class ProfileController {
         dto.setEmail(user.getEmail());
         dto.setBuyer(user.getRoles().stream().anyMatch(r->r.getName().equals("ROLE_BUYER")));
         dto.setSeller(user.getRoles().stream().anyMatch(r->r.getName().equals("ROLE_SELLER")));
+        dto.setInGameName(user.getInGameName());
+        dto.setAllegiance(user.getAllegiance());
         model.addAttribute("userDto", dto);
         return "profile";
     }
@@ -30,7 +32,15 @@ public class ProfileController {
     public String updateProfile(@ModelAttribute("userDto") UserDto dto,
                                 Authentication auth, Model model) {
         try {
-            userService.updateProfile(auth.getName(), dto.getEmail(), dto.getPassword(), dto.isBuyer(), dto.isSeller());
+            userService.updateProfile(
+                    auth.getName(),
+                    dto.getEmail(),
+                    dto.getPassword(),
+                    dto.isBuyer(),
+                    dto.isSeller(),
+                    dto.getInGameName(),
+                    dto.getAllegiance()
+            );
             model.addAttribute("success", "Profile updated");
         } catch(Exception e) {
             model.addAttribute("error", e.getMessage());

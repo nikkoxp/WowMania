@@ -50,16 +50,34 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public void updateProfile(String username, String newEmail, String newPassword, boolean buyer, boolean seller) {
+    public void updateProfile(String username, String newEmail, String newPassword, boolean buyer, boolean seller, String inGameName, String allegiance) {
         User user = userRepo.findByUsername(username);
         user.setEmail(newEmail);
         if (newPassword!=null && !newPassword.isBlank()) {
             user.setPassword(passwordEncoder.encode(newPassword));
         }
         Set<Role> roles = new HashSet<>();
-        if (buyer) roles.add(roleRepo.findByName("ROLE_BUYER"));
-        if (seller) roles.add(roleRepo.findByName("ROLE_SELLER"));
+        if (buyer) {
+            Role r = roleRepo.findByName("ROLE_BUYER");
+            if (r == null) {
+                r = new Role();
+                r.setName("ROLE_BUYER");
+                roleRepo.save(r);
+            }
+            roles.add(r);
+        }
+        if (seller) {
+            Role r = roleRepo.findByName("ROLE_SELLER");
+            if (r == null) {
+                r = new Role();
+                r.setName("ROLE_SELLER");
+                roleRepo.save(r);
+            }
+            roles.add(r);
+        }
         user.setRoles(roles);
+        user.setInGameName(inGameName);
+        user.setAllegiance(allegiance);
         userRepo.save(user);
     }
 }
