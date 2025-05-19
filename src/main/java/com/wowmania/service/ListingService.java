@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class ListingService {
@@ -28,6 +30,15 @@ public class ListingService {
     public Listing findById(Long id) {
         return listingRepo.findById(id).orElse(null);
     }
+
+    public Page<Listing> findPage(String keyword, Pageable pageable) {
+        if (keyword == null || keyword.isBlank()) {
+            return listingRepo.findAll(pageable);
+        } else {
+            return listingRepo.findByTitleContainingIgnoreCase(keyword, pageable);
+        }
+    }
+
 
     public void save(Listing listing, Authentication auth) {
         User seller = userRepo.findByUsername(auth.getName());

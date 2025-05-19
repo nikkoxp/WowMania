@@ -10,6 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 
 @Controller
 @RequestMapping("/listings")
@@ -17,9 +21,18 @@ public class ListingController {
     @Autowired private ListingService listingService;
 
     @GetMapping
-    public String viewListings(@RequestParam(value = "q", required = false) String keyword, Model model) {
-        model.addAttribute("listings", listingService.searchByTitle(keyword));
+    public String viewListings(
+            @RequestParam(value = "q", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            Model model
+    ) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Listing> listingPage = listingService.findPage(keyword, pageable);
+
+        model.addAttribute("listings", listingPage.getContent());
         model.addAttribute("keyword", keyword);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", listingPage.getTotalPages());
         return "listings";
     }
 
