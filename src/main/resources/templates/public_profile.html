@@ -12,26 +12,31 @@
     </div>
 </nav>
 
-<div class="container mt-4">
-    <h2 th:text="${user.username} + '\'s Profile'">Username's Profile</h2>
-
-    <div class="mb-3">
-        <img src="/img/avatar-placeholder.png" alt="Avatar" class="rounded-circle" width="120">
-    </div>
-
-    <p><strong>Email:</strong> <span th:text="${user.email}">email@example.com</span></p>
-    <p><strong>Account Type:</strong>
-        <span th:each="role, stat : ${user.roles}">
-            <span th:switch="${role.name}">
-              <span th:case="'ROLE_BUYER'">Buyer</span>
-              <span th:case="'ROLE_SELLER'">Seller</span>
-              <span th:case="'ROLE_ADMIN'">Admin</span>
-            </span>
-            <span th:if="${!stat.last}">+ </span>
+<div class="card bg-secondary text-white rounded-4 shadow-lg mx-auto" style="max-width: 600px;">
+    <div class="row g-0">
+        <div class="col-md-4 p-3 text-center">
+            <img src="/img/avatar-placeholder.png" class="img-fluid rounded-circle mb-2" alt="Avatar">
+            <h5 th:text="${user.username}">Username</h5>
+            <p><em th:text="${user.inGameName}">In-Game Name</em></p>
+            <p>
+                <span class="badge bg-warning text-dark" th:text="${user.allegiance}">Alliance</span>
+            </p>
+        </div>
+        <div class="col-md-8 p-4">
+            <p><strong>Email:</strong> <span th:text="${user.email}">email@example.com</span></p>
+            <p><strong>Account Type:</strong>
+                <span th:each="role, stat : ${user.roles}">
+          <span th:switch="${role.name}"
+                th:case="'ROLE_BUYER'">Buyer</span>
+          <span th:case="'ROLE_SELLER'">Seller</span>
+          <span th:case="'ROLE_ADMIN'">Admin</span>
+          <span th:if="${!stat.last}">, </span>
         </span>
-    </p>
-
+            </p>
+        </div>
+    </div>
 </div>
+
 
 </body>
 </html>

@@ -13,40 +13,59 @@
     </div>
 </nav>
 
-<div class="container mt-4">
-    <h2>My Profile</h2>
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-
-    <!-- Placeholder for profile pic -->
-    <div class="mb-3">
-        <img src="/img/avatar-placeholder.png" alt="Avatar" class="rounded-circle" width="120">
+<div class="card bg-secondary text-white rounded-4 shadow-lg mx-auto" style="max-width: 600px;">
+    <div class="row g-0">
+        <div class="col-md-4 p-3 text-center">
+            <img src="/img/avatar-placeholder.png" class="img-fluid rounded-circle mb-2" alt="Avatar">
+            <h5 th:text="${userDto.username}">Username</h5>
+            <p><em th:text="${userDto.inGameName}">In-Game Name</em></p>
+            <p>
+                <span class="badge bg-warning text-dark" th:text="${userDto.allegiance}">Horde</span>
+            </p>
+        </div>
+        <div class="col-md-8 p-4">
+            <form th:action="@{/profile}" th:object="${userDto}" method="post">
+                <!-- Email -->
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" th:field="*{email}" class="form-control" required>
+                </div>
+                <!-- New Password -->
+                <div class="mb-3">
+                    <label class="form-label">New Password</label>
+                    <input type="password" th:field="*{password}" class="form-control">
+                </div>
+                <!-- Roles checkboxes -->
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" th:field="*{buyer}" id="buyerCheck">
+                    <label class="form-check-label" for="buyerCheck">Buyer</label>
+                </div>
+                <div class="form-check form-check-inline mb-3">
+                    <input class="form-check-input" type="checkbox" th:field="*{seller}" id="sellerCheck">
+                    <label class="form-check-label" for="sellerCheck">Seller</label>
+                </div>
+                <!-- In-Game Name -->
+                <div class="mb-3">
+                    <label class="form-label">In-Game Name</label>
+                    <input type="text" th:field="*{inGameName}" class="form-control">
+                </div>
+                <label class="form-label">Allegiance</label>
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" th:field="*{allegiance}" value="Horde" id="hordeRadio">
+                        <label class="form-check-label" for="hordeRadio">Horde</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" th:field="*{allegiance}" value="Alliance" id="allianceRadio">
+                        <label class="form-check-label" for="allianceRadio">Alliance</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-warning w-100">Save Profile</button>
+            </form>
+        </div>
     </div>
-
-    <form th:action="@{/profile}" th:object="${userDto}" method="post">
-        <div class="mb-3">
-            <label class="form-label">Username</label>
-            <input type="text" th:field="*{username}" class="form-control" readonly>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" th:field="*{email}" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">New Password</label>
-            <input type="password" th:field="*{password}" class="form-control">
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" th:field="*{buyer}" id="buyerCheck">
-            <label class="form-check-label" for="buyerCheck">Buyer</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" th:field="*{seller}" id="sellerCheck">
-            <label class="form-check-label" for="sellerCheck">Seller</label>
-        </div>
-        <button type="submit" class="btn btn-warning mt-3">Save Changes</button>
-    </form>
 </div>
+
 
 </body>
 </html>
