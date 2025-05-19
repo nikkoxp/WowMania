@@ -4,6 +4,12 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.wow-background-2 {
+    background: url('../img/background2.webp') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .illidan-1 {
     background: url('../img/Illidan2.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -14,3 +20,4 @@
     backdrop-filter: blur(8px);
     background-color: rgba(0, 0, 0, 0.75) !important;
 }
+
