@@ -17,7 +17,7 @@ public class SecurityConfig {
                         .frameOptions(frame -> frame.disable())
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/custom-login", "/test-page", "/css/**", "/img/**", "/h2-console/**" ).permitAll()
+                        .requestMatchers("/", "/home", "/register", "/custom-login", "/css/**", "/img/**", "/h2-console/**" ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
