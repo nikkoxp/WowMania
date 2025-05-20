@@ -13,6 +13,11 @@ public class Listing {
     private String description;
     private BigDecimal price;
 
+    @Column(nullable = false)
+    private int quantity;
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+
     @ManyToOne
     private User seller;
 

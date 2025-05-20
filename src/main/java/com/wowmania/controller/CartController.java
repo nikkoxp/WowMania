@@ -19,7 +19,15 @@ public class CartController {
     @Autowired MessageService messageService;
 
     @PostMapping("/add/{id}")
-    public String addToCart(@PathVariable Long id, @RequestHeader("Referer") String referer) {
+    public String addToCart(
+            @PathVariable Long id,
+            @RequestHeader("Referer") String referer,
+            Model model
+    ) {
+        boolean ok = listingService.decrementInventory(id);
+        if (!ok) {
+            return "redirect:" + referer + "?soldout";
+        }
         Listing listing = listingService.findById(id);
         cartService.add(listing);
         return "redirect:" + referer;
@@ -30,6 +38,18 @@ public class CartController {
         model.addAttribute("items", cartService.getItems());
         model.addAttribute("total", cartService.getTotal());
         return "cart";
+    }
+
+    @PostMapping("/remove/{id}")
+    public String removeFromCart(
+            @PathVariable Long id,
+            @RequestHeader("Referer") String referer
+    ) {
+        boolean removed = cartService.removeOne(id);
+        if (removed) {
+            listingService.incrementInventory(id);
+        }
+        return "redirect:" + referer;
     }
 
     @PostMapping("/confirm")

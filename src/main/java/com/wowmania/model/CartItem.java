@@ -11,6 +11,10 @@ public class CartItem {
         this.quantity = 1;
     }
 
+    public void decrement() {
+        quantity = Math.max(0, quantity - 1);
+    }
+
     public Listing getListing() {
         return listing;
     }

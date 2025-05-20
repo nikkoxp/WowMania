@@ -21,6 +21,16 @@ public class CartService {
         });
     }
 
+    public boolean removeOne(Long listingId) {
+        CartItem item = items.get(listingId);
+        if (item == null) return false;
+        item.decrement();
+        if (item.getQuantity() <= 0) {
+            items.remove(listingId);
+        }
+        return true;
+    }
+
     public Collection<CartItem> getItems() { return items.values(); }
     public BigDecimal getTotal() {
         return items.values().stream()
