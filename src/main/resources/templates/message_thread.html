@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Conversation with ' + ${other}">Thread</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="wow-background-1 text-white">
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">WoWMania</a>
+        <form th:action="@{/logout}" method="post" class="d-inline">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-outline-light">Log Out</button>
+        </form>
+    </div>
+</nav>
+
+<div class="container mt-4 profile-page">
+    <div class="card bg-dark text-white mx-auto" style="max-width: 600px;">
+        <div class="card-header">
+            Conversation with <strong th:text="${other}">User</strong>
+        </div>
+        <div class="card-body">
+            <div th:each="m : ${thread}">
+                <p>
+                    <small th:text="${m.sentAt}">2025-05-01T12:00</small><br/>
+                    <strong th:text="${m.sender.username}">Sender</strong>:
+                    <span th:text="${m.content}">Full message text</span>
+                </p>
+                <hr/>
+            </div>
+            <form th:action="@{/mailbox/{u}/reply(u=${other})}" method="post">
+                <div class="mb-3">
+                    <textarea name="content" class="form-control" rows="3" placeholder="Your reply…" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-warning">Send Reply</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
