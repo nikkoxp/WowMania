@@ -2,93 +2,101 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Mailbox — WoWMania</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
+    <style>
+        .profile-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 56px);
+            padding: 1rem;
+        }
+        .listing-row {
+            height: 40px;
+            line-height: 40px;
+            padding: 0 1rem;
+            margin-bottom: 4px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .listings-container {
+            max-height: calc((40px + 4px) * 10);
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body class="wow-background-1 text-white">
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">WoWMania</a>
         <form th:action="@{/logout}" method="post" class="d-inline">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <button type="submit" class="btn btn-outline-light">Log Out</button>
         </form>
     </div>
 </nav>
 
-<div class="container mt-4 listings-container">
-    <div th:if="${#lists.isEmpty(convos)}" class="alert alert-info text-dark">
-        No messages.
-    </div>
-    <div th:each="msg : ${convos}" class="listing-row">
-        <a th:href="@{/mailbox/{u}(u=${msg.sender.username})}"
-           class="text-white text-decoration-none">
-            <strong th:text="${msg.sender.username}">Sender</strong>
-            — <span th:text="${#strings.abbreviate(msg.content, 30)}">Snippet…</span>
-        </a>
-        <a class="btn btn-sm btn-light"
-           th:href="@{/mailbox/{u}(u=${msg.sender.username})}">Reply</a>
+<div class="profile-page">
+    <div class="card bg-dark text-white rounded-4 shadow-lg mx-auto" style="width: 600px;">
+        <div class="card-body">
+            <h4>Mailbox</h4>
+            <div class="listings-container">
+                <div th:if="${#lists.isEmpty(partners)}" class="alert alert-info text-dark">
+                    No conversations yet.
+                </div>
+                <div th:each="user : ${partners}" class="listing-row">
+                    <span th:text="${user}">Username</span>
+                    <a th:href="@{/mailbox/{u}(u=${user})}"
+                       class="btn btn-sm btn-light">Reply</a>
+                </div>
+            </div>
+
+            <nav aria-label="Page navigation" class="mt-3" th:if="${totalPages > 1}"
+                 th:with="
+             startIndex=${currentPage - 1 > 1} ? ${currentPage - 1} : 1,
+             endIndex=${currentPage + 1 < totalPages - 2} ? ${currentPage + 1} : ${totalPages - 2}
+           ">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:if="${currentPage > 0}"
+                           th:href="@{/mailbox(page=${currentPage - 1})}">Previous</a>
+                        <span class="page-link" th:if="${currentPage == 0}">Previous</span>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'active'">
+                        <a class="page-link" th:href="@{/mailbox(page=0)}">1</a>
+                    </li>
+                    <li class="page-item disabled" th:if="${startIndex > 1}">
+                        <span class="page-link">…</span>
+                    </li>
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(startIndex+1, endIndex+1)}"
+                        th:classappend="${i-1 == currentPage} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/mailbox(page=${i-1})}"
+                           th:text="${i}">2</a>
+                    </li>
+                    <li class="page-item disabled" th:if="${endIndex < totalPages - 2}">
+                        <span class="page-link">…</span>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'active'">
+                        <a class="page-link" th:href="@{/mailbox(page=${totalPages - 1})}"
+                           th:text="${totalPages}">Last</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                        <a class="page-link" th:if="${currentPage + 1 < totalPages}"
+                           th:href="@{/mailbox(page=${currentPage + 1})}">Next</a>
+                        <span class="page-link" th:if="${currentPage + 1 >= totalPages}">Next</span>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
     </div>
 </div>
-
-<nav aria-label="Page navigation" class="mt-3"
-     th:if="${totalPages > 1}"
-     th:with="
-       startIndex=${currentPage - 1 > 1} ? ${currentPage - 1} : 1,
-       endIndex=${currentPage + 1 < totalPages - 2} ? ${currentPage + 1} : ${totalPages - 2}
-     ">
-    <ul class="pagination justify-content-center">
-
-        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-            <a class="page-link"
-               th:if="${currentPage > 0}"
-               th:href="@{/mailbox(page=${currentPage - 1})}">
-                Previous
-            </a>
-            <span class="page-link" th:if="${currentPage == 0}">Previous</span>
-        </li>
-
-        <li class="page-item" th:classappend="${currentPage == 0} ? 'active'">
-            <a class="page-link" th:href="@{/mailbox(page=0)}">1</a>
-        </li>
-
-        <li class="page-item disabled" th:if="${startIndex > 1}">
-            <span class="page-link">…</span>
-        </li>
-
-        <li class="page-item"
-            th:each="i : ${#numbers.sequence(startIndex+1, endIndex+1)}"
-            th:classappend="${i-1 == currentPage} ? 'active'">
-            <a class="page-link"
-               th:href="@{/mailbox(page=${i-1})}"
-               th:text="${i}">
-                2
-            </a>
-        </li>
-
-        <li class="page-item disabled" th:if="${endIndex < totalPages - 2}">
-            <span class="page-link">…</span>
-        </li>
-
-        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'active'">
-            <a class="page-link"
-               th:href="@{/mailbox(page=${totalPages - 1})}"
-               th:text="${totalPages}">
-                Last
-            </a>
-        </li>
-
-        <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-            <a class="page-link"
-               th:if="${currentPage + 1 < totalPages}"
-               th:href="@{/mailbox(page=${currentPage + 1})}">
-                Next
-            </a>
-            <span class="page-link" th:if="${currentPage + 1 >= totalPages}">Next</span>
-        </li>
-
-    </ul>
-</nav>
-
 </body>
 </html>
