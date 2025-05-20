@@ -20,21 +20,19 @@ public class MailboxController {
     @Autowired private UserService userService;
 
     @GetMapping
-    public String inbox(@RequestParam(value="page", defaultValue="0") int page,
-                        Authentication auth, Model model) {
+    public String inbox(
+            @RequestParam(value="page", defaultValue="0") int page,
+            Authentication auth, Model model
+    ) {
         User me = userService.findByUsername(auth.getName());
-        Page<Message> msgs = msgService.getInbox(me, page);
+        Page<User> partnersPage = msgService.getPartners(me, page);
 
-        List<String> partners = msgs.getContent().stream()
-                .map(m -> m.getSender().getUsername())
-                .distinct()
-                .toList();
-
-        model.addAttribute("partners", partners);
+        model.addAttribute("partners", partnersPage.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", msgs.getTotalPages());
+        model.addAttribute("totalPages", partnersPage.getTotalPages());
         return "mailbox";
     }
+
 
     @GetMapping("/{username}")
     public String thread(@PathVariable String username,
