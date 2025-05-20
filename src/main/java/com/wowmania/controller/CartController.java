@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/cart")
@@ -22,11 +23,12 @@ public class CartController {
     public String addToCart(
             @PathVariable Long id,
             @RequestHeader("Referer") String referer,
-            Model model
+            RedirectAttributes redirectAttrs
     ) {
         boolean ok = listingService.decrementInventory(id);
         if (!ok) {
-            return "redirect:" + referer + "?soldout";
+            redirectAttrs.addFlashAttribute("errorMessage", "Sorry, that listing is sold out.");
+            return "redirect:" + referer;
         }
         Listing listing = listingService.findById(id);
         cartService.add(listing);

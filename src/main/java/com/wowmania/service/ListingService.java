@@ -52,12 +52,12 @@ public class ListingService {
     }
 
     public Page<Listing> findPage(String keyword, Pageable pageable) {
-        if (keyword == null || keyword.isBlank()) {
-            return listingRepo.findAll(pageable);
-        } else {
-            return listingRepo.findByTitleContainingIgnoreCase(keyword, pageable);
-        }
+        String kw = (keyword == null ? "" : keyword);
+        return listingRepo.findByQuantityGreaterThanAndTitleContainingIgnoreCase(
+                0, kw, pageable
+        );
     }
+
 
 
     public void save(Listing listing, Authentication auth) {
