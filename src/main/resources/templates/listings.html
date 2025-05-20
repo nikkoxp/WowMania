@@ -50,9 +50,12 @@
            class="text-white text-decoration-none" th:text="${lst.title}">Title</a>
         <div class="d-flex align-items-center">
             <span class="me-3" th:text="${lst.price + 'g'}">0g</span>
-            <a sec:authorize="hasRole('BUYER') or hasRole('ADMIN')"
-               th:href="@{/listings/{id}/buy(id=${lst.id})}"
-               class="btn btn-sm btn-success">Add to Cart</a>
+            <form th:action="@{/cart/add/{id}(id=${lst.id})}" method="post"
+                  sec:authorize="hasRole('BUYER') or hasRole('ADMIN')" class="d-inline">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
+            </form>
+
         </div>
     </div>
 </div>
