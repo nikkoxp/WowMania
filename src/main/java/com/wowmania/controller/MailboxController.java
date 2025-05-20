@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -22,7 +24,13 @@ public class MailboxController {
                         Authentication auth, Model model) {
         User me = userService.findByUsername(auth.getName());
         Page<Message> msgs = msgService.getInbox(me, page);
-        model.addAttribute("convos", msgs.getContent());
+
+        List<String> partners = msgs.getContent().stream()
+                .map(m -> m.getSender().getUsername())
+                .distinct()
+                .toList();
+
+        model.addAttribute("partners", partners);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", msgs.getTotalPages());
         return "mailbox";
