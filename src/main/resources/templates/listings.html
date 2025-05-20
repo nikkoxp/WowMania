@@ -45,7 +45,7 @@
         No listings found.
     </div>
 
-    <div th:each="lst : ${listings}" class="listing-row">
+    <div th:each="lst : ${listings}" th:if="${lst.quantity > 0}" class="listing-row">
         <a th:href="@{/listings/{id}(id=${lst.id})}"
            class="text-white text-decoration-none" th:text="${lst.title}">Title</a>
         <div class="d-flex align-items-center">
@@ -56,6 +56,7 @@
                 <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
             </form>
         </div>
+        <span class="badge bg-secondary" th:text="'Stock: ' + ${lst.quantity}">Stock: 5</span>
     </div>
 </div>
 
