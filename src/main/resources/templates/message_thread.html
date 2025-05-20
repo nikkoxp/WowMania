@@ -5,7 +5,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
 </head>
-<body class="wow-background-1 text-white">
+<body class="wow-background-1 text-white" style="margin:0; height:100vh; display:flex; flex-direction:column;">
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">WoWMania</a>
@@ -16,40 +16,44 @@
     </div>
 </nav>
 
-<div class="container mt-4 profile-page">
-    <div class="card bg-dark text-white mx-auto" style="max-width: 600px;">
+<div style="flex:1; display:flex; justify-content:center; align-items:center; overflow:hidden;">
+    <div class="card bg-dark text-white" style="max-width:600px; width:100%; height:80%; display:flex; flex-direction:column;">
+
         <div class="card-header">
             Conversation with <strong th:text="${other}">User</strong>
         </div>
-        <div class="card-body d-flex flex-column">
-            <div id="message-container" class="flex-grow-1 overflow-auto mb-3"
-                 style="max-height: 400px;">
-                <div th:each="m : ${thread}">
-                    <p>
-                        <small th:text="${#dates.format(m.sentAt, 'yyyy-MM-dd HH:mm')}">2025-05-01 12:00</small><br/>
-                        <strong th:text="${m.sender.username}">Sender</strong>:
-                        <span th:text="${m.content}">Full message text</span>
-                    </p>
-                </div>
+
+        <!-- Scrollable messages -->
+        <div id="message-container"
+             class="card-body overflow-auto"
+             style="flex:1; padding-bottom:0;">
+            <div th:each="m : ${thread}">
+                <p>
+                    <small th:text="${'Sent at ' + #temporals.format(m.sentAt, 'HH:mm, dd-MM-yyyy')}"/>
+                    <br/>
+                    <strong th:text="${m.sender.username}"/>:
+                    <span th:text="${m.content}"/>
+                </p>
             </div>
+        </div>
+
+        <!-- Reply form (fixed at bottom) -->
+        <div class="p-3">
             <form th:action="@{/mailbox/{u}/reply(u=${other})}" method="post">
                 <div class="mb-3">
                     <textarea name="content" class="form-control" rows="3" placeholder="Your reply…" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-warning">Send Reply</button>
+                <button type="submit" class="btn btn-warning w-100">Send Reply</button>
             </form>
-
         </div>
 
     </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const container = document.getElementById("message-container");
-        if (container) {
-            container.scrollTop = container.scrollHeight;
-        }
+    document.addEventListener("DOMContentLoaded", () => {
+        const c = document.getElementById("message-container");
+        if (c) c.scrollTop = c.scrollHeight;
     });
 </script>
 
