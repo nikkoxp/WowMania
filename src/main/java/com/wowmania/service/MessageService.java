@@ -22,11 +22,22 @@ public class MessageService {
         return msgRepo.findByRecipientOrderBySentAtDesc(me, pg);
     }
 
+//    public List<Message> getThread(User me, String otherUsername) {
+//        User other = userRepo.findByUsername(otherUsername);
+//        return msgRepo.findBySenderAndRecipientOrRecipientAndSenderOrderBySentAtAsc(
+//                me, other,
+//                other, me
+//        );
+//    }
+
     public List<Message> getThread(User me, String otherUsername) {
         User other = userRepo.findByUsername(otherUsername);
-        return msgRepo.findBySenderAndRecipientOrRecipientAndSenderOrderBySentAtAsc(
-                me, other, other, me
-        );
+        return msgRepo.findThreadBetween(me, other);
+    }
+
+    public Page<User> getPartners(User me, int page) {
+        Pageable pg = PageRequest.of(page, 10, Sort.by("sentAt").descending());
+        return msgRepo.findConversationPartners(me, pg);
     }
 
     public void sendMessage(Authentication auth, String toUsername, String content) {
