@@ -3,8 +3,6 @@ package com.wowmania.controller;
 import com.wowmania.model.Listing;
 import com.wowmania.service.ListingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,6 +56,14 @@ public class ListingController {
     public String createListing(@ModelAttribute Listing listing, Authentication auth) {
         listingService.save(listing, auth);
         return "redirect:/listings";
+    }
+
+    @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteListing(@PathVariable Long id,
+                                @RequestHeader("Referer") String referer) {
+        listingService.deleteListing(id);
+        return "redirect:" + referer;
     }
 
     @GetMapping("/{id}/buy")

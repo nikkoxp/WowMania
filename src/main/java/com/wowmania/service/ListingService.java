@@ -35,6 +35,10 @@ public class ListingService {
         }
     }
 
+    @Transactional
+    public void deleteListing(Long id) {
+        listingRepo.deleteById(id);
+    }
 
     public List<Listing> findAll() {
         return listingRepo.findAll();
