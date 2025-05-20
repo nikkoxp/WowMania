@@ -45,6 +45,20 @@ public class ProfileController {
         } catch(Exception e) {
             model.addAttribute("error", e.getMessage());
         }
+
+        User updatedUser = userService.findByUsername(auth.getName());
+        UserDto updatedDto = new UserDto();
+        updatedDto.setUsername(updatedUser.getUsername());
+        updatedDto.setEmail(updatedUser.getEmail());
+        updatedDto.setBuyer(updatedUser.getRoles()
+                .stream().anyMatch(r -> r.getName().equals("ROLE_BUYER")));
+        updatedDto.setSeller(updatedUser.getRoles()
+                .stream().anyMatch(r -> r.getName().equals("ROLE_SELLER")));
+        updatedDto.setInGameName(updatedUser.getInGameName());
+        updatedDto.setAllegiance(updatedUser.getAllegiance());
+
+        model.addAttribute("userDto", updatedDto);
+
         return "profile";
     }
 
